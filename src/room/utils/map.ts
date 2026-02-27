@@ -427,7 +427,9 @@ const HFL_MAP = `{
 		{ "pos" : [9960,280 ], "trait" : "crowdboxmarker" },
 		{ "pos" : [9960,-280 ], "trait" : "crowdboxmarker" },
 		{ "pos" : [9950,280 ], "trait" : "crowdboxmarker" },
-		{ "pos" : [9950,-280 ], "trait" : "crowdboxmarker" }
+		{ "pos" : [9950,-280 ], "trait" : "crowdboxmarker" },
+		{ "pos" : [10000, 280], "trait" : "losmarkerHike" },
+		{ "pos" : [10000,-280], "trait" : "losmarkerHike" }
 
 	],
 
@@ -443,7 +445,8 @@ const HFL_MAP = `{
 		{ "d0" : 18, "d1" : 19, "trait" : "joint" },
 		{ "d0" : 19, "d1" : 20, "trait" : "joint" },
 		{ "d0" : 20, "d1" : 21, "trait" : "joint" },
-		{ "d0" : 21, "d1" : 18, "trait" : "joint" }
+		{ "d0" : 21, "d1" : 18, "trait" : "joint" },
+		{ "d0" : 26, "d1" : 27, "trait" : "loslineHike" }
 
 	],
 
@@ -478,7 +481,9 @@ const HFL_MAP = `{
 		"yardtogetline" : { "color" : "8FE271" },
 		"crowdboxline" : { "color" : "ff8164", "invMass" : 0.1 },
 		"crowdboxmarker" : { "color" : "ff6242", "radius" : 3, "vis" : true, "cMask" : [ ], "invMass" : 0.1 },
-		"goal" : { "vis" : true, "color" : "FFA500" }
+		"goal" : { "vis" : true, "color" : "FFA500" },
+		"losmarkerHike" : { "vis" : false, "radius" : 0, "cMask" : [ ] },
+		"loslineHike" : { "vis" : true, "color" : "30aedb" },
 
 	},
 
@@ -561,6 +566,8 @@ export const DISC_IDS = {
   LOS_BOT: 2,
   LTG_TOP: 3,
   LTG_BOT: 4,
+  LOS_HIKE_TOP: 26,
+  LOS_HIKE_BOT: 27,
   TE: [17, 18, 19, 20, 21],
   CROWD_BOX: [22, 23, 24, 25],
 };

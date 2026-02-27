@@ -6,10 +6,11 @@ const roomConfig: HBClientConfig = {
   //   password: ""
   noPlayer: true,
   public: false,
-  token: "thr1.AAAAAGMC1liVsu1rf65fxg.yn4Ifg9MnjQ",
+  token: "thr1.AAAAAGmh8VANaT6-ljUodw.5FNG65qzbgA",
 };
 
 // For testing purposes
 export const SHOW_DEBUG_CHAT: boolean = false;
+export const DEBUG_MODE: boolean = false;
 
 export default roomConfig;

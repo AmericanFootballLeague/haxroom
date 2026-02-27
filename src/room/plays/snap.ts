@@ -101,6 +101,10 @@ export default class Snap extends SnapEvents {
     this._setLivePlay(true);
     Ball.release();
     this.setState("ballSnapped");
+    const losX = Room.game.down.getLOS().x; // get LOS and set new discs based on the current LOS for each play
+
+    client.setDiscProperties(26, { x: losX, y: MAP_POINTS.BOT_SIDELINE });
+    client.setDiscProperties(27, { x: losX, y: MAP_POINTS.TOP_SIDELINE });
     Chat.sendMessageMaybeWithClock(
       `${ICONS.GreenCircle} Ball is Hiked`,
       this.time
@@ -110,6 +114,8 @@ export default class Snap extends SnapEvents {
   cleanUp() {
     this._stopBlitzClock();
     this._stopBallMoveBlitzClock();
+    client.setDiscProperties(26, { x: MAP_POINTS.HIDDEN });
+    client.setDiscProperties(27, { x: MAP_POINTS.HIDDEN });
   }
 
   getQuarterback() {
