@@ -2,6 +2,7 @@ import ChatMessage from "../classes/ChatMessage";
 import HBClient from "../HBClient";
 import Room from "../roomStructures/Room";
 import ChatHandler from "../roomStructures/ChatHandler";
+import Chat from "../roomStructures/Chat";
 
 const onChat: HBClient["onPlayerChat"] = (player, message) => {
   const playerProfile = Room.players.playerCollection.get(player.id);
@@ -14,6 +15,9 @@ const onChat: HBClient["onPlayerChat"] = (player, message) => {
 
   if (chatObj.startsWithTeamChatPrefix())
     return ChatHandler.maybeHandleTeamChat(chatObj);
+
+  if (chatObj.startsWithPrivateMessagePrefix())
+    return ChatHandler.maybeHandlePrivateMessage(chatObj);
 
   if (playerProfile.isMuted) return ChatHandler.handlePlayerMuted(chatObj);
 
