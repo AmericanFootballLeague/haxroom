@@ -47,35 +47,41 @@ export default class ChatHandler {
 
     // Must have "@@target message..."
     if (words.length < 2) {
-      chatObj.replyError("Usage: @@playername message");
+      chatObj.replyError(
+        `Usage: ${Chat.PREFIX.PRIVATEMESSAGE}playername message`
+      );
       return false;
     }
 
     // Example: "@@John_Doe hello" -> "john_doe"
-    const targetToken = words[0].substring(2).toLowerCase();
+    const targetToken = words[0]
+      .substring(Chat.PREFIX.PRIVATEMESSAGE.length)
+      .toLowerCase();
 
     // match by converting player.name spaces -> underscores
-    const playable = Room.players.getPlayable();
+    const players = Room.players.find();
 
     // Find exact match by normalized underscore-name
-    const matches = playable.filter((p) => {
+    const matches = players.filter((p) => {
       const pKey = p.name.replace(/\s+/g, "_").toLowerCase();
       return pKey === targetToken;
     });
 
     if (matches.length === 0) {
-      const availablePlayers = playable
+      const availablePlayers = players
         .map((p) => p.name.replace(/\s+/g, "_"))
         .join(", ");
       chatObj.replyError("Player not found. Check the player name.");
-      chatObj.replyError(`Tip: use underscores for spaces. Available: ${availablePlayers}`);
+      chatObj.replyError(
+        `Tip: use underscores for spaces. Example: ${Chat.PREFIX.PRIVATEMESSAGE}Player_Name`
+      );
       return false;
     }
 
     if (matches.length > 1) {
       // Rare, but if two players normalize to same key, tell the user
       chatObj.replyError(
-        `Multiple players match "@@${targetToken}". Please be more specific.`
+        `Multiple players match "${Chat.PREFIX.PRIVATEMESSAGE}${targetToken}". Please be more specific.`
       );
       return false;
     }
@@ -85,7 +91,9 @@ export default class ChatHandler {
     // basic error handling if no message or if player tries to message themselves
     const messageContent = words.slice(1).join(" ").trim();
     if (!messageContent) {
-      chatObj.replyError("Usage: @@playername message");
+      chatObj.replyError(
+        `Usage: ${Chat.PREFIX.PRIVATEMESSAGE}playername message`
+      );
       return false;
     }
 
