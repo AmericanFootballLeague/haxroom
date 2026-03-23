@@ -67,7 +67,7 @@ export default class ChatMessage {
    * Check if the message starts with the private message prefix
    */
   startsWithPrivateMessagePrefix(): boolean {
-    return this.content.startsWith("@@");
+    return this.content.startsWith(Chat.PREFIX.PRIVATEMESSAGE);
   }
 
   /**

@@ -48,6 +48,7 @@ class Chat {
   PREFIX = {
     TEAMCHAT: "t",
     COMMAND: "!",
+    PRIVATEMESSAGE: "@@",
   };
 
   /**
