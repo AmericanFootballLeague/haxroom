@@ -62,6 +62,13 @@ export default class ChatMessage {
     // t, it doesnt flag as team chat
     return firstWord === Chat.PREFIX.TEAMCHAT;
   }
+  
+  /**
+   * Check if the message starts with the private message prefix
+   */
+  startsWithPrivateMessagePrefix(): boolean {
+    return this.content.startsWith(Chat.PREFIX.PRIVATEMESSAGE);
+  }
 
   /**
    * Reply to the message

@@ -42,6 +42,75 @@ export default class ChatHandler {
     return false;
   }
 
+  static maybeHandlePrivateMessage(chatObj: ChatMessage): boolean {
+    const words = chatObj.content.split(/\s+/);
+
+    // Must have "@@target message..."
+    if (words.length < 2) {
+      chatObj.replyError(
+        `Usage: ${Chat.PREFIX.PRIVATEMESSAGE}playername message`
+      );
+      return false;
+    }
+
+    // Example: "@@John_Doe hello" -> "john_doe"
+    const targetToken = words[0]
+      .substring(Chat.PREFIX.PRIVATEMESSAGE.length)
+      .toLowerCase();
+
+    // match by converting player.name spaces -> underscores
+    const players = Room.players.find();
+
+    // Find exact match by normalized underscore-name
+    const matches = players.filter((p) => {
+      const pKey = p.name.replace(/\s+/g, "_").toLowerCase();
+      return pKey === targetToken;
+    });
+
+    if (matches.length === 0) {
+      const availablePlayers = players
+        .map((p) => p.name.replace(/\s+/g, "_"))
+        .join(", ");
+      chatObj.replyError("Player not found. Check the player name.");
+      chatObj.replyError(
+        `Tip: use underscores for spaces. Example: ${Chat.PREFIX.PRIVATEMESSAGE}Player_Name`
+      );
+      return false;
+    }
+
+    if (matches.length > 1) {
+      // Rare, but if two players normalize to same key, tell the user
+      chatObj.replyError(
+        `Multiple players match "${Chat.PREFIX.PRIVATEMESSAGE}${targetToken}". Please be more specific.`
+      );
+      return false;
+    }
+
+    const targetPlayer = matches[0];
+
+    // basic error handling if no message or if player tries to message themselves
+    const messageContent = words.slice(1).join(" ").trim();
+    if (!messageContent) {
+      chatObj.replyError(
+        `Usage: ${Chat.PREFIX.PRIVATEMESSAGE}playername message`
+      );
+      return false;
+    }
+
+    if (chatObj.author.id === targetPlayer.id) {
+      chatObj.replyError("You cannot send a message to yourself!");
+      return false;
+    }
+
+    const messageToSender = `📝 [To ${targetPlayer.shortName}] ${messageContent}`;
+    const messageToReceiver = `📝 [From ${chatObj.author.shortName}] ${messageContent}`;
+
+    Chat.send(messageToSender, { color: 0xcceb94, id: chatObj.author.id });
+    Chat.send(messageToReceiver, { color: 0xcceb94, id: targetPlayer.id });
+
+    return false;
+  }
+
   static handlePlayerMuted(chatObj: ChatMessage): false {
     chatObj.reply("You are muted");
     return false;
